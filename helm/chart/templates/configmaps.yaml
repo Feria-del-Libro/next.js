@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  KEY: "<value>"
+kind: ConfigMap
+metadata:
+  name: <app-name>-env
+  namespace: {{ .Values.environment }}

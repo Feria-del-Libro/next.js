@@ -1,0 +1,75 @@
+on:
+  workflow_dispatch:
+    inputs: 
+      Environment: 
+        type: choice
+        description: "Select target environment"
+        default: dev
+        options:
+          - dev
+          - test
+          - prod
+        required: true
+      Version: 
+        description: "Tag name: "
+        required: true
+      Dryrun:
+        type: boolean
+        description: "Dry run"
+      Debug:
+        type: boolean
+        description: "Debug"
+
+permissions: read-all
+
+name: "Deploy"
+run-name: "Deploy ${{ inputs.Version }} to ${{ inputs.Environment }}, Account ${{ inputs.aws-account }} - Dry run ${{ inputs.Dryrun }}" 
+
+jobs:
+  slack-start:
+    name: Slack start message
+    uses: Feria-del-Libro/workflows-comunes/.github/workflows/slackStartDeployNotif.yml@main
+    with:
+      SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
+      RELEASE_REVISION: ${{ inputs.Version }}
+      ENVIRONMENT: ${{ inputs.Environment }}
+      GITHUB_ACTOR: ${{ github.actor }}
+    secrets: inherit
+
+  deploy:
+    needs: [slack-start]
+    name: Deploy Chart
+    uses: Feria-del-Libro/workflows-comunes/.github/workflows/deployHelmChart-V2.yml@main
+    with:
+      AWS_ACCOUNT: ${{ vars.AWS_ACCOUNT }}
+      DEPLOYMENT: ${{ vars.DEPLOYMENT }}
+      RELEASE_REVISION: ${{ inputs.Version }}
+      HELM_CHART_REPO: ${{ vars.HELM_CHART_REPO }}
+      ENVIRONMENT: ${{ inputs.Environment }}
+      DRYRUN: ${{ inputs.Dryrun }}
+      DEBUG: ${{ inputs.Debug }}
+    secrets: inherit
+
+  slack-failed:
+    name: Slack result message
+    if: ${{ failure() }}
+    needs: [deploy]
+    uses: Feria-del-Libro/workflows-comunes/.github/workflows/slackFailDeployNotif.yml@main
+    with:
+      SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
+      RELEASE_REVISION: ${{ inputs.Version }}
+      ENVIRONMENT: ${{ inputs.Environment }}
+      GITHUB_ACTOR: ${{ github.actor }}
+    secrets: inherit  
+
+  slack-success:
+    name: Slack result message
+    if: ${{ success() }}
+    needs: [deploy]
+    uses: Feria-del-Libro/workflows-comunes/.github/workflows/slackSuccessDeployNotif.yml@main
+    with:
+      SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
+      RELEASE_REVISION: ${{ inputs.Version }}
+      ENVIRONMENT: ${{ inputs.Environment }}
+      GITHUB_ACTOR: ${{ github.actor }}
+    secrets: inherit  

@@ -1,0 +1,15 @@
+aws:
+  region: "us-east-1-"
+  default_region: "us-east-1"
+
+node_selector: "fundacion-el-libro-dev-nodes"
+
+subdomain: "<dev-subdomain>"
+
+secrets:
+  path: dev
+
+hpa:
+  replicaCount: 
+    min: "1"
+    max: "1"

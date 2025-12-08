@@ -1,0 +1,15 @@
+aws:
+  region: "us-east-1-"
+  default_region: "us-east-1"
+
+node_selector: "fundacion-el-libro-prod-nodes"
+
+subdomain: "<prod-subdomain>"
+
+secrets:
+  path: prod
+
+hpa:
+  replicaCount: 
+    min: "2"
+    max: "3"

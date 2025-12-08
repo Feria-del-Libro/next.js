@@ -1,0 +1,13 @@
+# Variables de configuración para GitHub Actions
+name: Repository Variables
+on:
+  workflow_dispatch:
+
+jobs:
+  set-variables:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Repository Variables
+        run: |
+          echo "DEPLOYMENT=next.js" >> $GITHUB_ENV
+          echo "ECR_REPOSITORY=ellibro/next.js" >> $GITHUB_ENV
