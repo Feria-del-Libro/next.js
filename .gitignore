@@ -37,3 +37,6 @@ out/
 *.db
 *.sqlite
 *.sqlite3
+# Next.js
+.next/
+next-env.d.ts
