@@ -12,18 +12,26 @@ interface OpenLibraryResponse {
   docs: Book[];
 }
 
+// Force static rendering so the page can be exported
+export const dynamic = "force-static";
+
 async function getBooks(): Promise<Book[]> {
-  const res = await fetch(
-    "https://openlibrary.org/search.json?q=literatura&limit=6&lang=es",
-    { cache: "no-store" }
-  );
+  try {
+    const res = await fetch(
+      "https://openlibrary.org/search.json?q=literatura&limit=6&lang=es",
+      { cache: "force-cache" }
+    );
 
-  if (!res.ok) {
-    throw new Error("Error al cargar los libros");
+    if (!res.ok) {
+      throw new Error("Error al cargar los libros");
+    }
+
+    const data: OpenLibraryResponse = await res.json();
+    return data.docs;
+  } catch {
+    // Fallback para que el build estatico no falle si la API está caída
+    return [];
   }
-
-  const data: OpenLibraryResponse = await res.json();
-  return data.docs;
 }
 
 export default async function LibrosPage() {
