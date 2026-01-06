@@ -3,5 +3,5 @@ data:
   KEY: "<value>"
 kind: ConfigMap
 metadata:
-  name: <app-name>-env
+  name: next-js-env
   namespace: {{ .Values.environment }}
