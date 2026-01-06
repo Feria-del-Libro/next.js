@@ -34,7 +34,7 @@ jobs:
     with:
       RELEASE_REVISION: ${{ needs.set-release-revision.outputs.RELEASE_REVISION }}
       DOCKER_FILE: docker/dockerfile
-      ECR_REPOSITORY: $${{ vars.ECR_REPOSITORY }}}}
+      ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
     secrets: inherit
 
   scan-image:
