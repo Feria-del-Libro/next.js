@@ -37,15 +37,6 @@ jobs:
       ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
     secrets: inherit
 
-  scan-image:
-    needs: [set-release-revision, build-docker-image]
-    uses: Feria-del-Libro/workflows-comunes/.github/workflows/trivyScanner.yml@main
-    with:
-      ECR_REPOSITORY: "${{ vars.ECR_REPOSITORY }}"
-      RELEASE_REVISION: ${{ needs.set-release-revision.outputs.RELEASE_REVISION }}
-      DEPLOYMENT: ${{ vars.DEPLOYMENT }}
-    secrets: inherit
-
   build-helm-package:
     needs: [set-release-revision, build-docker-image] 
     uses: Feria-del-Libro/workflows-comunes/.github/workflows/buildHelmPackage.yml@main
