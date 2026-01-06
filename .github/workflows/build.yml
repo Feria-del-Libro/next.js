@@ -48,7 +48,7 @@ jobs:
     secrets: inherit
 
   deploy:
-    needs: [set-release-revision]
+    needs: [set-release-revision, build-helm-package]
     name: Deploy Chart
     uses: Feria-del-Libro/workflows-comunes/.github/workflows/deployHelmChart-V2.yml@main
     with:
