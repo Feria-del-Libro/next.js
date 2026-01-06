@@ -4,7 +4,7 @@ aws:
 
 node_selector: "fundacion-el-libro-prod-nodes"
 
-subdomain: "<prod-subdomain>"
+subdomain: "next"
 
 secrets:
   path: prod

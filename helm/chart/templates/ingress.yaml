@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/affinity: cookie
     nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
     nginx.ingress.kubernetes.io/session-cookie-name: {{ .Values.subdomain }}
-  name: <app-name>-ingress
+  name: next-js-ingress
   namespace: {{ .Values.environment }}
 spec:
   ingressClassName: nginx
@@ -17,7 +17,7 @@ spec:
         paths:
           - backend:
               service:
-                name: <app-name>
+                name: next-js
                 port:
                   number: 80
             path: /

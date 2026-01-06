@@ -1,14 +1,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name:  <app-name>
+  name:  next-js
 spec:
   minReplicas: {{ int .Values.hpa.replicaCount.min }}
   maxReplicas: {{ int .Values.hpa.replicaCount.max }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name:  <app-name>
+    name:  next-js
   metrics:
   - type: Resource
     resource:
